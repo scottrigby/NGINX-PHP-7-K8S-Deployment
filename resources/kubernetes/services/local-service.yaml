@@ -1,0 +1,24 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: local-deployment
+  namespace: default
+  labels:
+    app: web
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: listener
+    protocol: TCP
+    port: 9000
+    targetPort: 9000
+  selector:
+    app: web
+  type: NodePort
+  sessionAffinity: None
+status:
+  loadBalancer: {}
