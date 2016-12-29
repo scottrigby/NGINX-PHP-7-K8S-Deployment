@@ -11,7 +11,7 @@ How does it work?
 =================
 
 ### Locally via Minikube
-1. Start Minikube:
+1. Start [Minikube](https://github.com/kubernetes/minikube):
 
     ```bash
     $ minikube start
