@@ -35,7 +35,7 @@ How does it work?
 4. Open the URL in your default browser:
 
     ```bash
-    $ url=$(minikube service local-deployment --url | sed -n 1p) && open $url
+    $ open $(minikube service local-deployment --url | sed -n 1p)
     ```
 5. [Clean up when you're done](https://www.youtube.com/watch?v=PJhXVg2QisM):
 
