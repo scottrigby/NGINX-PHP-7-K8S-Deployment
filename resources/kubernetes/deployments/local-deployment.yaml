@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: local-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: rabellamy/nginx
+        ports:
+        - containerPort: 80
+      - name: php7
+        image: rabellamy/php7
+        ports:
+        - containerPort: 9000
