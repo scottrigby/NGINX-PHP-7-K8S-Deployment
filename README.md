@@ -11,7 +11,7 @@ How does it work?
 =================
 
 ### Locally via Minikube
-1. Start Minikube
+1. Start Minikube:
 
     ```bash
     $ minikube start
@@ -20,25 +20,30 @@ How does it work?
     Creating machine...
     Starting local Kubernetes cluster...
     ```
-2. Create a K8S deployment
+2. Create a K8S deployment:
 
     ```bash
     $ kubectl create -f resources/kubernetes/services/local-service.yaml
     service "local-deployment" created
     ```
-3. Create a K8S service
+3. Create a K8S service:
 
     ```bash
     $ kubectl create -f resources/kubernetes/deployments/local-deployment.yaml
     deployment "local-deployment" created
     ```
-4. Get the URL
+4. Open the URL in your default browser:
 
     ```bash
-    $ minikube service local-deployment --url
-    http://192.168.99.100:32290 // Copy and paste the first IP address in your browser.
-    http://192.168.99.100:31452
+    $ url=$(minikube service local-deployment --url | sed -n 1p) && open $url
     ```
+5. [Clean up when you're done](https://www.youtube.com/watch?v=PJhXVg2QisM):
+
+    ```bash
+    $ minikube stop
+    Stopping local Kubernetes cluster...
+    Machine stopped.
+    ````
 
 Why?
 ====
