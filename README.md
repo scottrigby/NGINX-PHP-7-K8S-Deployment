@@ -40,9 +40,9 @@ How does it work?
 5. [Clean up when you're done](https://www.youtube.com/watch?v=PJhXVg2QisM):
 
     ```bash
-    $ minikube stop
-    Stopping local Kubernetes cluster...
-    Machine stopped.
+    $ minikube delete
+    Deleting local Kubernetes cluster...
+    Machine deleted.
     ````
 
 Why?
