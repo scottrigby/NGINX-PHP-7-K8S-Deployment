@@ -37,6 +37,10 @@ How does it work?
     ```bash
     $ open $(minikube service local-deployment --url | sed -n 1p)
     ```
+    Note, if you see a message:
+    > Waiting, endpoint for service is not ready yet...
+
+    Escape the above command with control-C.
 5. [Clean up when you're done](https://www.youtube.com/watch?v=PJhXVg2QisM):
 
     ```bash
