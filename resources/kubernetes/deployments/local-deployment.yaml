@@ -18,3 +18,10 @@ spec:
         image: rabellamy/php7
         ports:
         - containerPort: 9000
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: src
+      volumes:
+      - name: src
+        hostPath:
+          path: /Users/scottrigby/development/NGINX-PHP-7-K8S-Deployment/src
