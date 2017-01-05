@@ -20,13 +20,13 @@ How does it work?
     Creating machine...
     Starting local Kubernetes cluster...
     ```
-2. Create a K8S deployment:
+2. Create a K8S service:
 
     ```bash
     $ kubectl create -f resources/kubernetes/services/local-service.yaml
     service "local-deployment" created
     ```
-3. Create a K8S service:
+3. Create a K8S deployment:
 
     ```bash
     $ kubectl create -f resources/kubernetes/deployments/local-deployment.yaml
