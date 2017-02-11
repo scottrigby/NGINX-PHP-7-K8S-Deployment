@@ -12,9 +12,16 @@ spec:
     spec:
       containers:
       - name: php7
-        image: rabellamy/php7:0.1.0
+        image: ${PHP7_IMAGE}
         ports:
         - containerPort: 9000
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: src
+      volumes:
+      - name: src
+        hostPath:
+          path: ${HOSTPATH}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -29,6 +36,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: rabellamy/nginx:0.1.0
+        image: ${NGINX_IMAGE}
         ports:
         - containerPort: 80

@@ -35,25 +35,12 @@ How does it work?
 3. Create a K8S deployment:
 
     ```bash
-    $ kubectl create -f resources/kubernetes/deployments/local-deployment.yaml
+    $ ./scripts/create-deployment.sh \
+      -p PHP7_IMAGE='rabellamy/php7:0.1.0' \
+      -p NGINX_IMAGE='rabellamy/nginx:0.1.0' \
+      -p HOSTPATH='/PATH/TO/LOCAL/REPO/NGINX-PHP-7-K8S-Deployment/src'
     deployment "local-deployment" created
     ```
-    **Optional:** Mount local work into the container.
-
-    - Add the a volume info to `resources/kubernetes/deployments/local-deployment.yaml`:
-
-        ```diff
-                image: rabellamy/php7:0.1.0
-                ports:
-                - containerPort: 9000
-        +        volumeMounts:
-        +        - mountPath: /var/www/html
-        +          name: src
-        +      volumes:
-        +      - name: src
-        +        hostPath:
-        +          path: /PATH/TO/NGINX-PHP-7-K8S-Deployment/src
-        ```
 4. Get the URL for the NGINX service that will serve your PHP 7 app:
 
     ```bash
