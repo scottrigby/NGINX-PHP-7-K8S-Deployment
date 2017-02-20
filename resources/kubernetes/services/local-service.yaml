@@ -2,7 +2,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: local-deployment
+  name: local-service
   namespace: default
   labels:
     app: web
