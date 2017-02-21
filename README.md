@@ -24,7 +24,7 @@ How does it work?
 
     ```bash
     $ kubectl create -f resources/kubernetes/services/local-service.yaml
-    service "local-deployment" created
+    service "local-service" created
     ```
 3. Create a K8S deployment:
 
