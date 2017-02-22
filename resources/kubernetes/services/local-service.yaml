@@ -14,7 +14,9 @@ spec:
     targetPort: 9000
   selector:
     app: php7
-  type: ClusterIP
+  # Minikube needs NodePort to work.
+  # type: ClusterIP
+  type: NodePort
   sessionAffinity: None
 ---
 kind: Service
