@@ -1,21 +1,18 @@
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: local-deployment
+  name: php7-deployment
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: web
+        app: php7
     spec:
       containers:
-      - name: nginx
-        image: rabellamy/nginx
-        ports:
-        - containerPort: 80
       - name: php7
-        image: rabellamy/php7
+        image: rabellamy/php7:0.1.0
         ports:
         - containerPort: 9000
         volumeMounts:
@@ -25,3 +22,20 @@ spec:
       - name: src
         hostPath:
           path: /Users/scottrigby/development/NGINX-PHP-7-K8S-Deployment/src
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: rabellamy/nginx:0.1.0
+        ports:
+        - containerPort: 80
