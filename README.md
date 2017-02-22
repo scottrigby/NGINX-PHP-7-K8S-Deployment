@@ -16,10 +16,16 @@ How does it work?
     ```bash
     $ minikube start
     Starting local Kubernetes cluster...
-    Running pre-create checks...
-    Creating machine...
-    Starting local Kubernetes cluster...
+    Kubectl is now configured to use the cluster.
     ```
+    **Optional:** Use xhyve driver for Docker instead of Virtualbox.
+
+    - Follow Minikube documentation on [installing the xhyve driver](https://github.com/kubernetes/minikube/blob/master/DRIVERS.md#xhyve-driver).
+    - Pass the `--vm-driver` argument to "Start Minikube".
+
+        ```bash
+        minikube start --vm-driver=xhyve
+        ```
 2. Create a K8S service:
 
     ```bash
@@ -32,15 +38,29 @@ How does it work?
     $ kubectl create -f resources/kubernetes/deployments/local-deployment.yaml
     deployment "local-deployment" created
     ```
-4. Open the URL in your default browser:
+    **Optional:** Mount local work into the container.
+
+    - Add the a volume info to `resources/kubernetes/deployments/local-deployment.yaml`:
+
+        ```diff
+                image: rabellamy/php7:0.1.0
+                ports:
+                - containerPort: 9000
+        +        volumeMounts:
+        +        - mountPath: /var/www/html
+        +          name: src
+        +      volumes:
+        +      - name: src
+        +        hostPath:
+        +          path: /PATH/TO/NGINX-PHP-7-K8S-Deployment/src
+        ```
+4. Get the URL for the NGINX service that will serve your PHP 7 app:
 
     ```bash
-    $ open $(minikube service local-deployment --url | sed -n 1p)
+    $ minikube service nginx-service --url
     ```
-    Note, if you see a message:
+    Note, you may see this message until the pods are ready:
     > Waiting, endpoint for service is not ready yet...
-
-    Escape the above command with control-C.
 5. [Clean up when you're done](https://www.youtube.com/watch?v=PJhXVg2QisM):
 
     ```bash
@@ -49,49 +69,10 @@ How does it work?
     Machine deleted.
     ````
 
-Optional
-========
-
-### Use xhyve driver for Docker instead of Virtualbox
-1. Follow Minikube documentation on [installing the xhyve driver](https://github.com/kubernetes/minikube/blob/master/DRIVERS.md#xhyve-driver).
-
-2. Pass the `--vm-driver` argument to step 1 above "Start Minikube".
-
-    ```bash
-    minikube start --vm-driver=xhyve
-    ```
-
-### Mount local work into the container
-1. Add the a volume info to `resources/kubernetes/deployments/local-deployment.yaml`:
-
-    ```diff
-      @@ -18,3 +18,10 @@ spec:
-             image: rabellamy/php7
-             ports:
-             - containerPort: 9000
-    +        volumeMounts:
-    +        - mountPath: /var/www/html
-    +          name: src
-    +      volumes:
-    +      - name: src
-    +        hostPath:
-    +          path: /PATH/TO/NGINX-PHP-7-K8S-Deployment/src
-    ```
-2. If your deployment was already created above, delete the existing deployment:
-
-    ```bash
-    $ kubectl delete deployment local-deployment
-    deployment "local-deployment" deleted
-    ```
-3. Repeat step 3 above "Create a K8S deployment", with your newly edited
-   `local-deployment.yaml` file.
-
 Why?
 ====
-Because it's awesome. Also, such a template does not currently exist according
- to Google. There are many tutorials and recipes that do some of this, but not
- all of it. This is probably because the Kubernetes deployment object is
- relatively new, and most people using it are either too experienced with K8S
- (or to busy) to bother creating a reusable template like this, or also (to be
- fair) are not the same people interested in developing stand alone PHP 7 apps
- served by NGINX.
+We wanted an example of an NGINX and PHP 7 template using the Kubernetes
+ deployment object, and straight K8S configs, but to our knowledge none
+ previously existed. Here you go!
+
+ For a templatized solution, consider [Helm Charts](https://github.com/kubernetes/charts).
