@@ -15,13 +15,6 @@ spec:
         image: rabellamy/php7:0.1.0
         ports:
         - containerPort: 9000
-        volumeMounts:
-        - mountPath: /var/www/html
-          name: src
-      volumes:
-      - name: src
-        hostPath:
-          path: /Users/scottrigby/development/NGINX-PHP-7-K8S-Deployment/src
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
