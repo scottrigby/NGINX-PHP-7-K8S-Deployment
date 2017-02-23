@@ -32,3 +32,23 @@ spec:
         image: rabellamy/nginx:0.1.0
         ports:
         - containerPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mariadb-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.1.21
+        ports:
+        - name: mysql
+          containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: testPass
