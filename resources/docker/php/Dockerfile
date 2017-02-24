@@ -17,5 +17,5 @@ RUN \
   apt-get install -y \
     php7.1-mysql
 
-COPY Dockerfile /
+COPY resources/docker/nginx/Dockerfile /
 COPY src/ /var/www/html/
