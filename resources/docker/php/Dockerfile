@@ -18,5 +18,5 @@ RUN \
     mysql-client \
     php7.1-mysql
 
-COPY resources/docker/nginx/Dockerfile /
+COPY resources/docker/php/Dockerfile /
 COPY src/ /var/www/html/
