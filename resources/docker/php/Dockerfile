@@ -16,7 +16,8 @@ RUN \
   apt-get update && \
   apt-get install -y \
     mysql-client \
-    php7.1-mysql
+    php7.1-mysql \
+    php7.1-gd
 
 COPY resources/docker/php/Dockerfile /
 COPY src/ /var/www/html/
