@@ -15,6 +15,7 @@ RUN \
 RUN \
   apt-get update && \
   apt-get install -y \
+    mysql-client \
     php7.1-mysql
 
 COPY resources/docker/nginx/Dockerfile /
