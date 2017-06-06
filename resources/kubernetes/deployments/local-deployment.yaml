@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: php7
-        image: r6by/php7:0.3.0
+        image: r6by/php7:0.3.3
         ports:
         - containerPort: 9000
 ---
@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: r6by/nginx:0.1.3
+        image: r6by/nginx:0.1.4
         ports:
         - containerPort: 80
 ---
