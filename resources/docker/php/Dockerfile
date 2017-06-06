@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.1.5-fpm
 
 # Note there will be a single warning:
 # > apt-utils' package gets rid of the 'debconf: delaying package configuration,
