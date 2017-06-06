@@ -1,55 +1,19 @@
-FROM php:7.1.5-fpm-alpine
+FROM wodby/php:7.1
 
-# Note there will be a single warning:
-# > apt-utils' package gets rid of the 'debconf: delaying package configuration,
-#   since apt-utils is not installed.
-# Tl;dr, you can ignore this warning.
+ENV WODBY_DIR_FILES /mnt/files
+ENV WODBY_DIR_CONF /var/www/conf
 
-# Required to add packages.sury.org to sources, which we need for php7.1-mysql.
-# Note php:7.1-fpm base image already installs ca-certificates.
-# @todo Consider add-apt-repository instead. However, this is a bit lighter.
-# RUN \
-#   apk update -y && \
-#   apk add -y \
-#     apt-transport-https \
-#     lsb-release \
-#     wget
+ENV PHP_REALPATH_CACHE_TTL 3600
+ENV PHP_OUTPUT_BUFFERING 16384
 
-# RUN \
-#   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
-#   wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-
-# todo: Do we need any of these? If so, check for php7.1 compatibility.
-# - git
-# - mysql-client (don't think this is needed since MySQL is a separate service.)
-# - graphicsmagick
-# - php-imagick (instead installing php7.1-imagick)
-# - php-xml (instead installing php7.1-xml)
-#
-# See the list of existing PHP modules with `php -m`.
-ADD repositories /etc/apk/repositories
-
-RUN apk update && apk add \
-    php-curl \
-    php-json \
-    php-mcrypt \
-    # Check, necessary?
-    readline \
-    php-sqlite3 \
-    php-xml \
-    php-memcache \
-    # php-xdebug@community \
-    # MySQL.
-    mysql-client \
-    php-mysql \
-    # Image toolkits.
-    php-gd \
-    # To-do: find imagemagick package/solution for alpine.
-    #php7.1-imagick \
-    # Check if this helps. If not, nuke it.
-    # graphicsmagick@community \
-    imagemagick \
-    vim
+RUN su-exec www-data composer global require drush/drush && \
+    su-exec www-data composer clear-cache && \
+    curl https://drupalconsole.com/installer -L -o drupal.phar && \
+    mv drupal.phar /usr/local/bin/drupal && \
+    chmod +x /usr/local/bin/drupal && \
+    mv /usr/local/bin/actions.mk /usr/local/bin/php.mk && \
+    mkdir -p $WODBY_DIR_FILES $WODBY_DIR_CONF && \
+    chown -R www-data:www-data $WODBY_DIR_CONF
 
 COPY html/ /var/www/html/
 
