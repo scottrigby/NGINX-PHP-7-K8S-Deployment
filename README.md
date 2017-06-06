@@ -54,6 +54,32 @@ How does it work?
         +        hostPath:
         +          path: /PATH/TO/NGINX-PHP-7-K8S-Deployment/src
         ```
+    **Optional:** Replace this php7 image with a custom one you build on top of this.
+
+    - Change image name:
+
+        ```diff
+            spec:
+            containers:
+            - name: php7
+        -        image: r6by/php7:0.2.0
+        +        image: REPO/NAMESPACE/MY-PHP7-IMAGE:TAG
+                ports:
+                - containerPort: 9000
+        ```
+
+    - Add imagePullSecrets if you are hosting your image in a private repo (you
+      must create the image pull secret in the namespace first):
+
+        ```diff
+            labels:
+                app: php7
+            spec:
+        +      imagePullSecrets:
+        +        - name: MY-PULL-SECRET
+            containers:
+            - name: php7
+        ```
 4. Get the URL for the NGINX service that will serve your PHP 7 app:
 
     ```bash
