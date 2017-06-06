@@ -1,0 +1,11 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/7"
+        }
+    ],
+    "require": {
+        "drupal/drupal": "7.54.0"
+    }
+}
