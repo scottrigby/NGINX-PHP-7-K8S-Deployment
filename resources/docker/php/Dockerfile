@@ -4,6 +4,7 @@ ADD repositories /etc/apk/repositories
 
 # See the list of existing PHP modules with `php -m`.
 RUN apk update && apk add \
+    ncurses-libs \
     php-curl \
     php-json \
     php-mcrypt \
@@ -17,11 +18,7 @@ RUN apk update && apk add \
     mysql-client \
     php-mysql \
     # Image toolkits.
-    php-gd \
-    # To-do: find imagemagick package/solution for alpine.
-    #php7.1-imagick \
-    # Check if this helps. If not, nuke it.
-    # graphicsmagick@community \
+    #php-gd \
     imagemagick \
     vim
 
