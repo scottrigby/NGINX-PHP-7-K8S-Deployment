@@ -29,6 +29,19 @@ FROM php:7.1.5-fpm-alpine
 # See the list of existing PHP modules with `php -m`.
 ADD repositories /etc/apk/repositories
 
+# Fix Error:
+# > loading shared library libncursesw.so.6: No such file or directory (needed by /usr/local/sbin/php-fpm).
+#
+# - bash
+#   Attempt to allow ncurses (\) below. May not have helped us.
+# - libc6-compat
+#   See https://github.com/grpc/grpc/issues/6126
+# - ncurses
+#   trying, in itself didn't fix it
+# - ncurses-libs
+#   let's see
+RUN apk update && apk add bash ncurses ncurses-libs libc6-compat
+
 RUN apk update && apk add \
     php-curl \
     php-json \
@@ -54,3 +67,5 @@ RUN apk update && apk add \
 COPY html/ /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html
+
+CMD ["php-fpm"]

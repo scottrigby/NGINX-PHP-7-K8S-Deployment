@@ -1,0 +1,3 @@
+http://dl-4.alpinelinux.org/alpine/v3.3/main
+@testing http://dl-4.alpinelinux.org/alpine/edge/testing
+@community http://dl-4.alpinelinux.org/alpine/edge/community
