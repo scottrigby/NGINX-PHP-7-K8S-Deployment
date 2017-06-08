@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: r6by/nginx:0.1.4
+        image: r6by/nginx:0.1.6
         ports:
         - containerPort: 80
 ---
