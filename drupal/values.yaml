@@ -1,14 +1,13 @@
 # namespace: my-cluster-namespace
 replicaCount: 1
 image:
-  repository: nginx
-  tag: stable
+  repository: r6by/php7
+  tag: 0.5.9
   pullPolicy: IfNotPresent
 service:
-  name: nginx
-  type: ClusterIP
-  externalPort: 80
-  internalPort: 80
+  name: drupal
+  type: NodePort
+  internalPort: 9000
 resources:
   limits:
     cpu: 100m
@@ -16,4 +15,3 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
-
