@@ -15,23 +15,3 @@ spec:
         image: r6by/php7:0.5.9
         ports:
         - containerPort: 9000
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: mariadb-deployment
-spec:
-  template:
-    metadata:
-      labels:
-        app: mariadb
-    spec:
-      containers:
-      - name: mariadb
-        image: mariadb:10.1.21
-        ports:
-        - name: mysql
-          containerPort: 3306
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: testPass
