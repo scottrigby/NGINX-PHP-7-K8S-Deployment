@@ -16,18 +16,3 @@ spec:
     app: nginx
   type: NodePort
   sessionAffinity: None
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: mariadb-service
-  namespace: default
-  labels:
-    app: mariadb
-spec:
-  ports:
-  - name: mysql
-    port: 3306
-    targetPort: mysql
-  selector:
-    app: mariadb
