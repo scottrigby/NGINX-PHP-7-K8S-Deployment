@@ -19,23 +19,6 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nginx-deployment
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: r6by/nginx:0.1.6
-        ports:
-        - containerPort: 80
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: mariadb-deployment
 spec:
   template:
