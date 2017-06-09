@@ -2,26 +2,6 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: php7-service
-  namespace: default
-  labels:
-    app: php7
-spec:
-  ports:
-  - name: listener
-    protocol: TCP
-    port: 9000
-    targetPort: 9000
-  selector:
-    app: php7
-  # Minikube needs NodePort to work.
-  # type: ClusterIP
-  type: NodePort
-  sessionAffinity: None
----
-kind: Service
-apiVersion: v1
-metadata:
   name: nginx-service
   namespace: default
   labels:
