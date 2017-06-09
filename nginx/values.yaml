@@ -1,8 +1,3 @@
-# Default values for drupal.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# Convenience for developers deploying in a namespace.
 # namespace: my-cluster-namespace
 replicaCount: 1
 image:
