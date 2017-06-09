@@ -4,6 +4,7 @@ metadata:
   name: {{ template "fullname" . }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+  namespace: {{ default [] .Values.namespace | quote }}
 spec:
   type: {{ .Values.service.type }}
   ports:
