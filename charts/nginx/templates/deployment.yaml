@@ -18,25 +18,18 @@ spec:
         env:
           - name: NGINX_SERVER_NAME
             value: {{ default "drupal" .Values.serverName | quote }}
-        env:
           - name: NGINX_SERVER_ROOT
             value: {{ default "/var/www/html" .Values.serverRoot | quote }}
-        env:
           - name: NGINX_STATIC_CONTENT_ACCESS_LOG
             value: {{ default "off" .Values.accessLog | quote }}
-        env:
           - name: NGINX_STATIC_CONTENT_EXPIRES
             value: {{ default "30d" .Values.expires | quote }}
-        env:
           - name: NGINX_STATIC_CONTENT_OPEN_FILE_CACHE
             value: {{ default "max=3000 inactive=120s" .Values.openFileCache | quote }}
-        env:
           - name: NGINX_STATIC_CONTENT_OPEN_FILE_CACHE_VALID
             value: {{ default "45s" .Values.openFileValid | quote }}
-        env:
           - name: NGINX_STATIC_CONTENT_OPEN_FILE_CACHE_MIN_USES
             value: {{ default "2" .Values.openFileCacheMinUses | quote }}
-        env:
           - name: NGINX_ALLOW_XML_ENDPOINTS
             value: {{ default true .Values.allowXMLEndpoints | quote }}
         ports:
