@@ -1,6 +1,6 @@
 FROM php:7.1.5-fpm-alpine
 
-ADD repositories /etc/apk/repositories
+ADD docker/repositories /etc/apk/repositories
 
 # To-do: Find better way to install GD (Drupal install requirement).
 # See: https://stackoverflow.com/a/42100719
