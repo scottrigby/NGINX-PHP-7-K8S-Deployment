@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: r6by/php7
-  tag: 0.5.9
+  tag: 0.5.10
   pullPolicy: IfNotPresent
 service:
   name: drupal
@@ -14,3 +14,5 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
+nginx:
+  serverRoot: /var/www/html/vendor/drupal/drupal

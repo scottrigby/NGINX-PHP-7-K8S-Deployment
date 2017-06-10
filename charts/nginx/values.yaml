@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
-  repository: nginx
-  tag: stable
+  repository: r6by/nginx
+  tag: 0.1.9
   pullPolicy: IfNotPresent
 service:
   name: nginx
@@ -29,3 +29,14 @@ resources:
     cpu: 100m
     memory: 128Mi
 
+# NGINX conf template variables.
+# ref http://nginx.org/en/docs/http/server_names.html
+#
+# serverName: "_"
+# serverRoot: /var/www/html
+# accessLog: off
+# expires: 30d
+# openFileCache: "max=3000 inactive=120s"
+# openFileValid: 45s
+# openFileCacheMinUses: 2
+# allowXMLEndpoints: true

@@ -1,0 +1,17 @@
+dependencies:
+- condition: ""
+  enabled: false
+  import-values: null
+  name: nginx
+  repository: file://../nginx
+  tags: null
+  version: 0.1.0
+- condition: ""
+  enabled: false
+  import-values: null
+  name: mariadb
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  tags: null
+  version: 0.6.2
+digest: sha256:1e97edcaf29d546f5885d4682647306a7b426a4b75e5689cbece52974c0529aa
+generated: 2017-06-09T17:49:21.211644318-04:00

@@ -27,7 +27,7 @@ RUN apk update && apk add \
     imagemagick \
     vim
 
-COPY html/ /var/www/html/
+COPY docker/php/html/ /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html
 

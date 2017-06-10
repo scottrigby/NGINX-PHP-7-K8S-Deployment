@@ -1,0 +1,7 @@
+dependencies:
+- name: nginx
+  version: 0.1.0
+  repository: "file://../nginx"
+- name: mariadb
+  version: 0.6.2
+  repository: https://kubernetes-charts.storage.googleapis.com/
