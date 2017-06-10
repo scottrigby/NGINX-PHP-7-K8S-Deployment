@@ -19,7 +19,7 @@ spec:
           - name: NGINX_SERVER_NAME
             value: {{ default "drupal" .Values.serverName | quote }}
           - name: NGINX_SERVER_ROOT
-            value: {{ default "/var/www/html" .Values.serverRoot | quote }}
+            value: {{ default "/var/www/html/vendor/drupal/drupal" .Values.serverRoot | quote }}
           - name: NGINX_STATIC_CONTENT_ACCESS_LOG
             value: {{ default "off" .Values.accessLog | quote }}
           - name: NGINX_STATIC_CONTENT_EXPIRES

@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: r6by/nginx
-  tag: 0.1.9
+  tag: 0.1.10
   pullPolicy: IfNotPresent
 service:
   name: nginx
@@ -32,8 +32,8 @@ resources:
 # NGINX conf template variables.
 # ref http://nginx.org/en/docs/http/server_names.html
 #
-# serverName: "_"
-# serverRoot: /var/www/html
+# serverName: drupal
+# serverRoot: /var/www/html/vendor/drupal/drupal
 # accessLog: off
 # expires: 30d
 # openFileCache: "max=3000 inactive=120s"
