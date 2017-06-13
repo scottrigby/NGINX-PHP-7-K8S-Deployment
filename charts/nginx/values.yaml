@@ -32,7 +32,6 @@ resources:
 # NGINX conf template variables.
 # ref http://nginx.org/en/docs/http/server_names.html
 #
-# serverName: drupal
 # serverRoot: /var/www/html/vendor/drupal/drupal
 # accessLog: off
 # expires: 30d
