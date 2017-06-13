@@ -1,3 +1,4 @@
+# To-do: Somehow pass NGINX_SERVER_NAME value to dependent nginx chart.
 upstream backend {
     server {{ getenv "NGINX_SERVER_NAME" "drupal" }}:{{ getenv "NGINX_BACKEND_PORT" "9000" }};
 }
