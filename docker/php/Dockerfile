@@ -12,6 +12,7 @@ RUN apk update && apk add --no-cache \
 
 # See the list of existing PHP modules with `php -m`.
 RUN apk update && apk add \
+    bash \
     ncurses-libs \
     php-curl \
     php-json \
