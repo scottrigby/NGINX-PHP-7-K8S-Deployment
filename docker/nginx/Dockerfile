@@ -24,4 +24,4 @@ RUN apk update && apk add \
 COPY docker/nginx/drupal.conf.tpl /etc/gotpl/
 COPY docker/nginx/docker-entrypoint.sh /docker-entrypoint.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["/docker-entrypoint.sh"]
