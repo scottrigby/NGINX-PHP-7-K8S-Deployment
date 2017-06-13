@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
-  repository: r6by/php7
-  tag: 0.5.10
+  repository: quay.io/scottrigby/php7-drupal
+  tag: helm
   pullPolicy: IfNotPresent
 service:
   name: drupal
