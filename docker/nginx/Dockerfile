@@ -1,4 +1,4 @@
-FROM nginx:1.13.1-alpine
+FROM quay.io/scottrigby/docker-nginx:upload-progress
 
 ENV GOTPL_VER 0.1.5
 ENV GOTPL_URL https://github.com/wodby/gotpl/releases/download/${GOTPL_VER}/gotpl-alpine-linux-amd64-${GOTPL_VER}.tar.gz

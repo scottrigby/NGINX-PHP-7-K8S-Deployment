@@ -8,4 +8,4 @@ fi
 
 gotpl /etc/gotpl/drupal.conf.tpl > /etc/nginx/conf.d/drupal.conf
 
-nginx -g daemon off
+nginx -g 'daemon off;'

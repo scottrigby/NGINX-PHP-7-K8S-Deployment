@@ -1,3 +1,7 @@
+upstream backend {
+    server {{ getenv "NGINX_SERVER_NAME" "drupal" }}:{{ getenv "NGINX_BACKEND_PORT" "9000" }};
+}
+
 server {
     server_name {{ getenv "NGINX_SERVER_NAME" "drupal" }};
     listen 80;
