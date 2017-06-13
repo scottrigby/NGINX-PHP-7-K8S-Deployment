@@ -28,7 +28,8 @@ RUN apk update && apk add \
     vim
 
 COPY docker/php/html/ /var/www/html/
+COPY docker/nginx/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chown -R www-data:www-data /var/www/html
 
-CMD ["php-fpm"]
+CMD ["/docker-entrypoint.sh"]
