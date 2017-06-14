@@ -1,7 +1,3 @@
-upstream backend {
-    server {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
-}
-
 server {
     server_name {{ getenv "NGINX_SERVER_NAME" "drupal" }};
     listen 80;
@@ -24,7 +20,7 @@ server {
             fastcgi_param QUERY_STRING q=$uri&$args;
             fastcgi_param SCRIPT_NAME /index.php;
             fastcgi_param SCRIPT_FILENAME $document_root/index.php;
-            fastcgi_pass backend;
+            fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
             log_not_found off;
         }
 
@@ -117,7 +113,7 @@ server {
         fastcgi_param QUERY_STRING $query_string;
         fastcgi_param SCRIPT_NAME /index.php;
         fastcgi_param SCRIPT_FILENAME $document_root/index.php;
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
         track_uploads {{ getenv "NGINX_DRUPAL_TRACK_UPLOADS" "uploads 60s" }};
     }
 
@@ -126,7 +122,7 @@ server {
         fastcgi_param QUERY_STRING q=$uri;
         fastcgi_param SCRIPT_NAME /index.php;
         fastcgi_param SCRIPT_FILENAME $document_root/index.php;
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
     }
 
     location ~* ^/authorize.php {
@@ -134,27 +130,27 @@ server {
         fastcgi_param QUERY_STRING $args;
         fastcgi_param SCRIPT_NAME /authorize.php;
         fastcgi_param SCRIPT_FILENAME $document_root/authorize.php;
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
     }
 
     location = /cron.php {
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
     }
 
     location = /index.php {
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
     }
 
     location = /install.php {
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
     }
 
     location ~* ^/update.php {
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
     }
 
     location = /xmlrpc.php {
-        fastcgi_pass backend;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
     }
 
     location ^~ /.bzr {
