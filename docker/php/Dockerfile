@@ -29,7 +29,7 @@ RUN apk update && apk add \
     vim
 
 COPY docker/php/html/ /var/www/html/
-COPY docker/nginx/docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker/php/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chown -R www-data:www-data /var/www/html
 
