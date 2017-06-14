@@ -1,6 +1,6 @@
 server {
-    server_name {{ getenv "NGINX_SERVER_NAME" "drupal" }};
-    listen 80;
+    server_name _;
+    listen 80 default;
 
     root {{ getenv "NGINX_SERVER_ROOT" "/var/www/html/" }};
     index index.php;
