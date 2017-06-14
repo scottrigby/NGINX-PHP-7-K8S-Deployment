@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: quay.io/scottrigby/nginx-drupal
   tag: helm
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 service:
   name: nginx
   type: ClusterIP
