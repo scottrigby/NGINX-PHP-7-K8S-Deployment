@@ -17,7 +17,7 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
           - name: NGINX_SERVER_NAME
-            value: {{ template "fullname" . }}-drupal
+            value: {{ .Release.Name }}-drupal
           - name: NGINX_SERVER_ROOT
             value: {{ default "/var/www/html/vendor/drupal/drupal" .Values.serverRoot | quote }}
           - name: NGINX_STATIC_CONTENT_ACCESS_LOG
