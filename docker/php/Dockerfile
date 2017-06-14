@@ -31,6 +31,8 @@ RUN apk update && apk add \
 COPY docker/php/html/ /var/www/html/
 COPY docker/php/docker-entrypoint.sh /docker-entrypoint.sh
 
+EXPOSE 9000
+
 RUN chown -R www-data:www-data /var/www/html
 
 CMD ["/docker-entrypoint.sh"]
