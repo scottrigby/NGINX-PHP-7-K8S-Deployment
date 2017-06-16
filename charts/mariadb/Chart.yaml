@@ -1,0 +1,4 @@
+apiVersion: 1
+description: A Helm chart for Kubernetes
+name: mariadb
+version: 0.1.0

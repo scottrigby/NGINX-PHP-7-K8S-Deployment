@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: quay.io/scottrigby/php7-drupal
-  tag: helm
+  tag: gke
   pullPolicy: IfNotPresent
 service:
   name: drupal
