@@ -1,103 +1,215 @@
-# Per https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/
 server {
-    server_name {{ getenv "NGINX_SERVER_NAME" "drupal" }};
-    root {{ getenv "NGINX_SERVER_ROOT" "/var/www/html/" }};
+    server_name _;
+    listen 80 default;
 
-    location = /favicon.ico {
-        log_not_found off;
-        access_log {{ getenv "NGINX_STATIC_CONTENT_ACCESS_LOG" "off" }};
+    root {{ getenv "NGINX_SERVER_ROOT" "/var/www/html/" }};
+    index index.php;
+
+    include fastcgi_params;
+    fastcgi_keep_conn on;
+    fastcgi_index index.php;
+    fastcgi_param QUERY_STRING $query_string;
+    fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_hide_header 'X-Drupal-Cache';
+    fastcgi_hide_header 'X-Generator';
+
+    location / {
+        location ~* /system/files/ {
+            include fastcgi_params;
+            fastcgi_param QUERY_STRING q=$uri&$args;
+            fastcgi_param SCRIPT_NAME /index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+            fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+            log_not_found off;
+        }
+
+        location ~* /sites/.*/files/private/ {
+            internal;
+        }
+
+        location ~* /files/styles/ {
+            access_log {{ getenv "NGINX_STATIC_CONTENT_ACCESS_LOG" "off" }};
+            expires {{ getenv "NGINX_STATIC_CONTENT_EXPIRES" "30d" }};
+            try_files $uri @drupal;
+        }
+
+        location ~* /sites/.*/files/.*\.txt {
+            access_log {{ getenv "NGINX_STATIC_CONTENT_ACCESS_LOG" "off" }};
+            expires {{ getenv "NGINX_STATIC_CONTENT_EXPIRES" "30d" }};
+            tcp_nodelay off;
+            open_file_cache {{ getenv "NGINX_STATIC_CONTENT_OPEN_FILE_CACHE" "max=3000 inactive=120s" }};
+            open_file_cache_valid {{ getenv "NGINX_STATIC_CONTENT_OPEN_FILE_CACHE_VALID" "45s" }};
+            open_file_cache_min_uses {{ getenv "NGINX_STATIC_CONTENT_OPEN_FILE_CACHE_MIN_USES" "2" }};
+            open_file_cache_errors off;
+        }
+
+        location ~* /sites/.*/files/advagg_css/ {
+            expires max;
+            add_header ETag '';
+            add_header Last-Modified 'Wed, 20 Jan 1988 04:20:42 GMT';
+            add_header Accept-Ranges '';
+            location ~* /sites/.*/files/advagg_css/css[_[:alnum:]]+\.css$ {
+                access_log {{ getenv "NGINX_STATIC_CONTENT_ACCESS_LOG" "off" }};
+                try_files $uri @drupal;
+            }
+        }
+
+        location ~* /sites/.*/files/advagg_js/ {
+            expires max;
+            add_header ETag '';
+            add_header Last-Modified 'Wed, 20 Jan 1988 04:20:42 GMT';
+            add_header Accept-Ranges '';
+            location ~* /sites/.*/files/advagg_js/js[_[:alnum:]]+\.js$ {
+                access_log {{ getenv "NGINX_STATIC_CONTENT_ACCESS_LOG" "off" }};
+                try_files $uri @drupal;
+            }
+        }
+
+        location ~* /admin/reports/hacked/.+/diff/ {
+            try_files $uri @drupal;
+        }
+{{ if getenv "NGINX_ALLOW_XML_ENDPOINTS" }}
+        location ~* ^.+\.xml {
+            try_files $uri @drupal;
+        }
+{{ else }}
+        location ~* /rss.xml {
+            try_files $uri @drupal-no-args;
+        }
+
+        location ~* /sitemap.xml {
+            try_files $uri @drupal;
+        }
+{{ end }}
+        location ~* ^.+\.(?:css|cur|js|jpe?g|gif|htc|ico|png|xml|otf|ttf|eot|woff|woff2|svg|svgz)$ {
+            access_log {{ getenv "NGINX_STATIC_CONTENT_ACCESS_LOG" "off" }};
+            expires {{ getenv "NGINX_STATIC_CONTENT_EXPIRES" "30d" }};
+            tcp_nodelay off;
+            open_file_cache {{ getenv "NGINX_STATIC_CONTENT_OPEN_FILE_CACHE" "max=3000 inactive=120s" }};
+            open_file_cache_valid {{ getenv "NGINX_STATIC_CONTENT_OPEN_FILE_CACHE_VALID" "45s" }};
+            open_file_cache_min_uses {{ getenv "NGINX_STATIC_CONTENT_OPEN_FILE_CACHE_MIN_USES" "2" }};
+            open_file_cache_errors off;
+
+            location ~* ^.+\.svgz$ {
+                gzip off;
+                add_header Content-Encoding gzip;
+            }
+        }
+
+        location ~* ^.+\.(?:pdf|pptx?)$ {
+            expires {{ getenv "NGINX_STATIC_CONTENT_EXPIRES" "30d" }};
+            tcp_nodelay off;
+        }
+
+        location ~* ^(?:.+\.(?:htaccess|make|txt|engine|inc|info|install|module|profile|po|pot|sh|.*sql|test|theme|tpl(?:\.php)?|xtmpl)|code-style\.pl|/Entries.*|/Repository|/Root|/Tag|/Template)$ {
+            return 404;
+        }
+        try_files $uri @drupal;
+    }
+
+    location @drupal {
+        include fastcgi_params;
+        fastcgi_param QUERY_STRING $query_string;
+        fastcgi_param SCRIPT_NAME /index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+        track_uploads {{ getenv "NGINX_DRUPAL_TRACK_UPLOADS" "uploads 60s" }};
+    }
+
+    location @drupal-no-args {
+        include fastcgi_params;
+        fastcgi_param QUERY_STRING q=$uri;
+        fastcgi_param SCRIPT_NAME /index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+    }
+
+    location ~* ^/authorize.php {
+        include fastcgi_params;
+        fastcgi_param QUERY_STRING $args;
+        fastcgi_param SCRIPT_NAME /authorize.php;
+        fastcgi_param SCRIPT_FILENAME $document_root/authorize.php;
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+    }
+
+    location = /cron.php {
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+    }
+
+    location = /index.php {
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+    }
+
+    location = /install.php {
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+    }
+
+    location ~* ^/update.php {
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+    }
+
+    location = /xmlrpc.php {
+        fastcgi_pass {{ getenv "NGINX_SERVER_NAME" "drupal" }}:9000;
+    }
+
+    location ^~ /.bzr {
+        return 404;
+    }
+
+    location ^~ /.git {
+        return 404;
+    }
+
+    location ^~ /.hg {
+        return 404;
+    }
+
+    location ^~ /.svn {
+        return 404;
+    }
+
+    location ^~ /.cvs {
+        return 404;
+    }
+
+    location ^~ /patches {
+        return 404;
+    }
+
+    location ^~ /backup {
+        return 404;
     }
 
     location = /robots.txt {
-        allow all;
-        log_not_found off;
         access_log {{ getenv "NGINX_STATIC_CONTENT_ACCESS_LOG" "off" }};
+        try_files $uri @drupal-no-args;
     }
 
-    # Very rarely should these ever be accessed outside of your lan
-    location ~* \.(txt|log)$ {
-        allow 192.168.0.0/16;
-        deny all;
+    location = /favicon.ico {
+        expires {{ getenv "NGINX_STATIC_CONTENT_EXPIRES" "30d" }};
+        try_files /favicon.ico @empty;
     }
 
-    location ~ \..*/.*\.php$ {
-        return 403;
-    }
-
-    location ~ ^/sites/.*/private/ {
-        return 403;
-    }
-
-    # Allow "Well-Known URIs" as per RFC 5785
     location ~* ^/.well-known/ {
         allow all;
     }
 
-    # Block access to "hidden" files and directories whose names begin with a
-    # period. This includes directories used by version control systems such
-    # as Subversion or Git to store control files.
-    location ~ (^|/)\. {
-        return 403;
+    location @empty {
+        expires {{ getenv "NGINX_STATIC_CONTENT_EXPIRES" "30d" }};
+        empty_gif;
     }
 
-    location / {
-        # try_files $uri @rewrite; # For Drupal <= 6
-        try_files $uri /index.php?$query_string; # For Drupal >= 7
-    }
-
-    location @rewrite {
-        rewrite ^/(.*)$ /index.php?q=$1;
-    }
-
-    # Don't allow direct access to PHP files in the vendor directory.
-    location ~ /vendor/.*\.php$ {
-        deny all;
+    location ~* ^.+\.php$ {
         return 404;
     }
 
-    # In Drupal 8, we must also match new paths where the '.php' appears in
-    # the middle, such as update.php/selection. The rule we use is strict,
-    # and only allows this pattern with the update.php front controller.
-    # This allows legacy path aliases in the form of
-    # blog/index.php/legacy-path to continue to route to Drupal nodes. If
-    # you do not have any paths like that, then you might prefer to use a
-    # laxer rule, such as:
-    #   location ~ \.php(/|$) {
-    # The laxer rule will continue to work if Drupal uses this new URL
-    # pattern with front controllers other than update.php in a future
-    # release.
-    location ~ '\.php$|^/update.php' {
-        fastcgi_split_path_info ^(.+?\.php)(|/.*)$;
-        # Security note: If you're running a version of PHP older than the
-        # latest 5.3, you should have "cgi.fix_pathinfo = 0;" in php.ini.
-        # See http://serverfault.com/q/627903/94922 for details.
-        include fastcgi_params;
-        # Block httpoxy attacks. See https://httpoxy.org/.
-        fastcgi_param HTTP_PROXY "";
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-        fastcgi_param QUERY_STRING $query_string;
-        fastcgi_intercept_errors on;
-        # PHP 5 socket location.
-        #fastcgi_pass unix:/var/run/php5-fpm.sock;
-        # PHP 7 socket location.
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+    location ~ (?<upload_form_uri>.*)/x-progress-id:(?<upload_id>\d*) {
+        rewrite ^ $upload_form_uri?X-Progress-ID=$upload_id;
     }
 
-    # Fighting with Styles? This little gem is amazing.
-    # location ~ ^/sites/.*/files/imagecache/ { # For Drupal <= 6
-    location ~ ^/sites/.*/files/styles/ { # For Drupal >= 7
-        try_files $uri @rewrite;
-    }
-
-    # Handle private files through Drupal. Private file's path can come
-    # with a language prefix.
-    location ~ ^(/[a-z\-]+)?/system/files/ { # For Drupal >= 7
-        try_files $uri /index.php?$query_string;
-    }
-
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-        expires max;
-        log_not_found off;
+    location ~ ^/progress$ {
+        upload_progress_json_output;
+        report_uploads uploads;
     }
 }
