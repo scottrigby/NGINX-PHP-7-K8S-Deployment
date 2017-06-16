@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "fullname" . }}
   labels:
+    app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
   replicas: {{ .Values.replicaCount }}
