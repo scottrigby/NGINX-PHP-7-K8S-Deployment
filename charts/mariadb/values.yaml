@@ -28,7 +28,7 @@ imagePullPolicy: IfNotPresent
 
 ## Kubernetes service type
 serviceType: ExternalName
-externalName: #Request a cloudsql or aurora deployment of mariadb from your administrator, which must be in the same VPN
+externalName: #Request a cloudsql or aurora deployment of mariadb from your administrator, which must be in the same VPC
 
 ## Enable persistence using Persistent Volume Claims
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
